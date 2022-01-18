@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import models.User;
+
 public class UserDAO {
 
 	final String DB_URL = "jdbc:mysql://localhost/pokedex";
@@ -30,21 +32,30 @@ public class UserDAO {
 
 	}
 	
-	public boolean login(String username, String password) {
+	public boolean login(User usuario) {
 		final String QUERY = "SELECT username, password FROM users "+
-							 "where username = '"+ username +"' and "+
-							 "password = '"+ password +"'";
+							 "where username = '"+ usuario.getUsername() +"' and "+
+							 "password = '"+ usuario.getPassword() +"'";
 		try {
 			Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(QUERY);
-			while (rs.next()) {
-			return true;
-			}
+			return rs.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public void register(User usuario) {
+		final String INSERT = "INSERT INTO users (username,password) VALUES ('"+usuario.getUsername()+"','"+usuario.getPassword()+"');";
+		try {
+			Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(INSERT);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

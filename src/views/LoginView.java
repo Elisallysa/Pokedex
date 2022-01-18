@@ -16,12 +16,17 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import com.mysql.cj.x.protobuf.MysqlxExpect.Open.Condition.Key;
+
 import dao.UserDAO;
+import models.User;
 
 import java.awt.Panel;
 import javax.swing.JPanel;
 import java.awt.SystemColor;
 import java.awt.Label;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginView {
 
@@ -76,53 +81,54 @@ public class LoginView {
 		
 		lblPassword = new JLabel("Contrase\u00F1a");
 		lblPassword.setForeground(Color.DARK_GRAY);
-		lblPassword.setBounds(121, 198, 140, 36);
+		lblPassword.setBounds(144, 198, 117, 36);
 		lblPassword.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblPassword.setFont(new Font("Consolas", Font.PLAIN, 22));
+		lblPassword.setFont(new Font("Consolas", Font.PLAIN, 18));
 		frame.getContentPane().add(lblPassword);
 		
 		lblTitle = new JLabel("Pokedex");
-		lblTitle.setForeground(Color.DARK_GRAY);
+		lblTitle.setForeground(Color.BLACK);
 		lblTitle.setBounds(121, 85, 360, 46);
 		lblTitle.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTitle.setFont(new Font("Consolas", Font.BOLD, 26));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		frame.getContentPane().add(lblTitle);
 		
-		txtfUser = new JTextField();
-		txtfUser.setBounds(271, 153, 210, 36);
-		frame.getContentPane().add(txtfUser);
-		txtfUser.setColumns(10);
-		
-		pwfPassword = new JPasswordField();
-		pwfPassword.setBounds(271, 199, 210, 36);
-		frame.getContentPane().add(pwfPassword);
-		
 		lblUsuario = new JLabel("Usuario");
 		lblUsuario.setForeground(Color.DARK_GRAY);
-		lblUsuario.setBounds(121, 152, 115, 36);
+		lblUsuario.setBounds(144, 152, 92, 36);
 		lblUsuario.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblUsuario.setFont(new Font("Consolas", Font.PLAIN, 22));
+		lblUsuario.setFont(new Font("Consolas", Font.PLAIN, 18));
 		frame.getContentPane().add(lblUsuario);
-		
-		btnLogin = new JButton("Login");
-		btnLogin.setBounds(159, 263, 123, 36);
-		btnLogin.setVerticalAlignment(SwingConstants.BOTTOM);
-		btnLogin.setForeground(Color.DARK_GRAY);
-		btnLogin.setFont(new Font("Consolas", Font.PLAIN, 20));
-		frame.getContentPane().add(btnLogin);
-		
-		btnSignIn = new JButton("Sign in");
-		btnSignIn.setForeground(Color.DARK_GRAY);
-		btnSignIn.setBounds(310, 263, 123, 36);
-		btnSignIn.setVerticalAlignment(SwingConstants.BOTTOM);
-		btnSignIn.setFont(new Font("Consolas", Font.PLAIN, 20));
-		frame.getContentPane().add(btnSignIn);
 		
 		pnlGreenScreen = new JPanel();
 		pnlGreenScreen.setBackground(new Color(153, 204, 102));
 		pnlGreenScreen.setBounds(109, 67, 381, 263);
 		frame.getContentPane().add(pnlGreenScreen);
+		pnlGreenScreen.setLayout(null);
+		
+		btnSignIn = new JButton("Registrarme");
+		btnSignIn.setBounds(196, 195, 149, 36);
+		pnlGreenScreen.add(btnSignIn);
+		btnSignIn.setForeground(Color.DARK_GRAY);
+		btnSignIn.setVerticalAlignment(SwingConstants.BOTTOM);
+		btnSignIn.setFont(new Font("Consolas", Font.PLAIN, 18));
+		
+			btnLogin = new JButton("Login");
+			btnLogin.setBounds(39, 195, 147, 36);
+			pnlGreenScreen.add(btnLogin);
+			btnLogin.setVerticalAlignment(SwingConstants.BOTTOM);
+			btnLogin.setForeground(Color.DARK_GRAY);
+			btnLogin.setFont(new Font("Consolas", Font.PLAIN, 18));
+			
+			txtfUser = new JTextField();
+			txtfUser.setBounds(142, 88, 210, 36);
+			pnlGreenScreen.add(txtfUser);
+			txtfUser.setColumns(10);
+			
+			pwfPassword = new JPasswordField();
+			pwfPassword.setBounds(142, 134, 210, 36);
+			pnlGreenScreen.add(pwfPassword);
 		
 		pnlGreyScreen = new JPanel();
 		pnlGreyScreen.setBackground(new Color(119, 136, 153));
@@ -175,8 +181,8 @@ public class LoginView {
 			public void actionPerformed(ActionEvent e) {
 				String username = txtfUser.getText();
 				String password = new String (pwfPassword.getPassword());
-				
-				boolean loggedIn = userDAO.login(username, password);
+				User usuario = new User(0, username, password);
+				boolean loggedIn = userDAO.login(usuario);
 				
 				if (loggedIn) {
 					JOptionPane.showMessageDialog(btnLogin, "¡Login correcto!");
@@ -188,6 +194,8 @@ public class LoginView {
 		
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new RegisterView();
+				frame.dispose();
 			}
 		});
 	}
