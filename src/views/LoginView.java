@@ -186,6 +186,8 @@ public class LoginView {
 				
 				if (loggedIn) {
 					JOptionPane.showMessageDialog(btnLogin, "¡Login correcto!");
+					new PokedexView();
+					frame.dispose();
 				} else {
 					JOptionPane.showMessageDialog(btnLogin, "Nombre de usuario o contraseña inválidos.");
 				}
