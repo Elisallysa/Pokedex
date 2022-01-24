@@ -18,32 +18,72 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
+import dao.PokemonDAO;
+import models.Pokemon;
+
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+
 public class PokedexView {
 
 	private JFrame frame;
-	JLabel lblImgBackground;
-	Image background;
+	private JLabel lblImgBackground;
+	private Image background;
+	private JTextField tfId;
 	private JTextField tfNombre;
-	private JTextField txtCategoria;
-	private JTextField txtTipo1;
-	private JTextField txtTipo2;
-	private JTextField textHeight;
-	private JTextField textWeight;
+	private JTextField tfCategoria;
+	private JTextField tfTipo1;
+	private JTextField tfTipo2;
+	private JTextField tfHeight;
+	private JTextField tfWeight;
+	private JTextField tfHabilidad;
 	private JLabel lblMeters;
 	private JLabel lblKilos;
-	private JTextField txtMar;
 	private JLabel lblHabilidad;
 	private JPanel lblCrossHoriz;
 	private JPanel lblCrossVertic;
 	private JButton btnEliminar;
 	private JButton btnModificar;
 	private JButton btnNewButton;
+	private JButton btnBack;
+	private JButton btnGuardar;
+	private JButton btnModificarCancelar;
+	private JButton btnForward;
+	private PokemonDAO pokemonDAO;
+	private Pokemon pokemon;
+	private JLabel lblAlmohadilla;
+	private ArrayList<Pokemon> pokemons;
+	private int index;
+	
 
 	/**
 	 * Create the application.
 	 */
 	public PokedexView() {
 		initialize();
+		//Imprimiremos el primer Pokemon con el índice inicializado a 0 (si en la BD hay mínimo 1 Pokemon almacenado):
+		this.pokemonDAO = new PokemonDAO();
+		this.pokemons = pokemonDAO.getAll();
+		index = 0;
+		/**
+		 * Para probar la impresión del Pokemon, se usó este método de la clase pokemonDAO en un principio:
+		 * pokemon = pokemonDAO.first(); 
+		 */
+		if (this.pokemons.size()>0) {
+			printPokemon();
+		}
+		
+		
+		//Para que se vea la imagen de fondo tengo que dejarlo aquí, no puedo meterlo en el método configureUIComponents():
+		lblImgBackground = new JLabel("fondo");
+		lblImgBackground.setFont(new Font("Consolas", Font.PLAIN, 16));
+		lblImgBackground.setBounds(0, -23, 766, 445);
+		frame.getContentPane().add(lblImgBackground);
+		lblImgBackground.setIcon(new ImageIcon(background));
+		lblImgBackground.setSize(750, 500);
+
 	}
 
 	/**
@@ -51,50 +91,31 @@ public class PokedexView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		
 		this.configureUIComponents();
+		this.configureUIListeners();
 		frame.setVisible(true);
 	}
 
 	private void configureUIComponents() {
-
+		// Marco e imagen de fondo
 		frame.getContentPane().setBackground(new Color(204, 0, 0));
 		frame.getContentPane().setLayout(null);
-
-		lblImgBackground = new JLabel("Pikachu");
-		lblImgBackground.setFont(new Font("Consolas", Font.PLAIN, 16));
 		background = new ImageIcon(this.getClass().getResource("/pokedex_entry.jpg")).getImage();
-
-		lblCrossHoriz = new JPanel();
-		lblCrossHoriz.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblCrossHoriz.setBackground(new Color(0, 0, 0));
-		lblCrossHoriz.setBounds(524, 345, 103, 36);
-		frame.getContentPane().add(lblCrossHoriz);
-
-		lblCrossVertic = new JPanel();
-		lblCrossVertic.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblCrossVertic.setBackground(new Color(0, 0, 0));
-		lblCrossVertic.setBounds(558, 312, 36, 103);
-		frame.getContentPane().add(lblCrossVertic);
-
-		btnEliminar = new JButton("ELIMINAR");
-		btnEliminar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnEliminar.setFont(new Font("Courier New", Font.BOLD, 20));
-		btnEliminar.setBounds(353, 331, 137, 62);
-		frame.getContentPane().add(btnEliminar);
-
-		btnModificar = new JButton("MODIFICAR");
-		btnModificar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnModificar.setFont(new Font("Courier New", Font.BOLD, 18));
-		btnModificar.setBounds(213, 331, 137, 62);
-		frame.getContentPane().add(btnModificar);
-
-		btnNewButton = new JButton("CREAR");
-		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnNewButton.setFont(new Font("Courier New", Font.BOLD, 22));
-		btnNewButton.setBounds(73, 331, 137, 62);
-		frame.getContentPane().add(btnNewButton);
-
+		frame.setBounds(100, 100, 713, 487);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// Info Pokemon
+		tfId = new JTextField();
+		tfId.setOpaque(false);
+		tfId.setHorizontalAlignment(SwingConstants.LEFT);
+		tfId.setForeground(Color.WHITE);
+		tfId.setFont(new Font("Consolas", Font.PLAIN, 26));
+		tfId.setEditable(false);
+		tfId.setColumns(10);
+		tfId.setBorder(null);
+		tfId.setBounds(635, 55, 54, 43);
+		frame.getContentPane().add(tfId);
+		
 		lblHabilidad = new JLabel("Habilidad");
 		lblHabilidad.setForeground(new Color(255, 255, 255));
 		lblHabilidad.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -103,92 +124,202 @@ public class PokedexView {
 		lblHabilidad.setBounds(300, 134, 84, 20);
 		frame.getContentPane().add(lblHabilidad);
 
-		txtMar = new JTextField();
-		txtMar.setHorizontalAlignment(SwingConstants.CENTER);
-		txtMar.setBorder(null);
-		txtMar.setOpaque(false);
-		txtMar.setText("Mar LLamas");
-		txtMar.setBounds(300, 154, 84, 62);
-		frame.getContentPane().add(txtMar);
-		txtMar.setColumns(10);
+		tfHabilidad = new JTextField();
+		tfHabilidad.setHorizontalAlignment(SwingConstants.CENTER);
+		tfHabilidad.setBorder(null);
+		tfHabilidad.setOpaque(false);
+		tfHabilidad.setBounds(300, 154, 84, 62);
+		frame.getContentPane().add(tfHabilidad);
+		tfHabilidad.setColumns(10);
 
 		lblKilos = new JLabel("kg");
 		lblKilos.setFont(new Font("Consolas", Font.PLAIN, 24));
-		lblKilos.setBounds(538, 244, 54, 29);
+		lblKilos.setBounds(558, 244, 54, 29);
 		frame.getContentPane().add(lblKilos);
 
 		lblMeters = new JLabel("m");
 		lblMeters.setFont(new Font("Consolas", Font.PLAIN, 24));
-		lblMeters.setBounds(538, 202, 54, 29);
+		lblMeters.setBounds(558, 202, 54, 29);
 		frame.getContentPane().add(lblMeters);
 
-		textWeight = new JTextField();
-		textWeight.setText("28");
-		textWeight.setOpaque(false);
-		textWeight.setFont(new Font("Consolas", Font.PLAIN, 24));
-		textWeight.setColumns(10);
-		textWeight.setBorder(null);
-		textWeight.setBounds(482, 237, 67, 43);
-		frame.getContentPane().add(textWeight);
+		tfWeight = new JTextField();
+		tfWeight.setHorizontalAlignment(SwingConstants.RIGHT);
+		tfWeight.setOpaque(false);
+		tfWeight.setFont(new Font("Consolas", Font.PLAIN, 24));
+		tfWeight.setColumns(10);
+		tfWeight.setBorder(null);
+		tfWeight.setBounds(482, 237, 67, 43);
+		frame.getContentPane().add(tfWeight);
 
-		textHeight = new JTextField();
-		textHeight.setOpaque(false);
-		textHeight.setFont(new Font("Consolas", Font.PLAIN, 24));
-		textHeight.setBorder(null);
-		textHeight.setText("1.1 ");
-		textHeight.setBounds(482, 199, 67, 35);
-		frame.getContentPane().add(textHeight);
-		textHeight.setColumns(10);
+		tfHeight = new JTextField();
+		tfHeight.setHorizontalAlignment(SwingConstants.RIGHT);
+		tfHeight.setOpaque(false);
+		tfHeight.setFont(new Font("Consolas", Font.PLAIN, 24));
+		tfHeight.setBorder(null);
+		tfHeight.setBounds(482, 199, 67, 35);
+		frame.getContentPane().add(tfHeight);
+		tfHeight.setColumns(10);
 
-		txtTipo2 = new JTextField();
-		txtTipo2.setText("El\u00E9ctrico");
-		txtTipo2.setOpaque(false);
-		txtTipo2.setHorizontalAlignment(SwingConstants.LEFT);
-		txtTipo2.setFont(new Font("Consolas", Font.PLAIN, 18));
-		txtTipo2.setEditable(false);
-		txtTipo2.setColumns(10);
-		txtTipo2.setBorder(null);
-		txtTipo2.setBounds(533, 144, 110, 35);
-		frame.getContentPane().add(txtTipo2);
+		tfTipo2 = new JTextField();
+		tfTipo2.setOpaque(false);
+		tfTipo2.setHorizontalAlignment(SwingConstants.LEFT);
+		tfTipo2.setFont(new Font("Consolas", Font.PLAIN, 18));
+		tfTipo2.setEditable(false);
+		tfTipo2.setColumns(10);
+		tfTipo2.setBorder(null);
+		tfTipo2.setBounds(533, 144, 110, 35);
+		frame.getContentPane().add(tfTipo2);
 
-		txtTipo1 = new JTextField();
-		txtTipo1.setText("Planta");
-		txtTipo1.setOpaque(false);
-		txtTipo1.setHorizontalAlignment(SwingConstants.LEFT);
-		txtTipo1.setFont(new Font("Consolas", Font.PLAIN, 18));
-		txtTipo1.setEditable(false);
-		txtTipo1.setColumns(10);
-		txtTipo1.setBorder(null);
-		txtTipo1.setBounds(412, 144, 111, 35);
-		frame.getContentPane().add(txtTipo1);
+		tfTipo1 = new JTextField();
+		tfTipo1.setOpaque(false);
+		tfTipo1.setHorizontalAlignment(SwingConstants.LEFT);
+		tfTipo1.setFont(new Font("Consolas", Font.PLAIN, 18));
+		tfTipo1.setEditable(false);
+		tfTipo1.setColumns(10);
+		tfTipo1.setBorder(null);
+		tfTipo1.setBounds(412, 144, 111, 35);
+		frame.getContentPane().add(tfTipo1);
 
-		txtCategoria = new JTextField();
-		txtCategoria.setBorder(null);
-		txtCategoria.setOpaque(false);
-		txtCategoria.setFont(new Font("Consolas", Font.PLAIN, 24));
-		txtCategoria.setText("Pok\u00E9mon Semilla");
-		txtCategoria.setBounds(346, 89, 246, 35);
-		frame.getContentPane().add(txtCategoria);
-		txtCategoria.setColumns(10);
+		tfCategoria = new JTextField();
+		tfCategoria.setBorder(null);
+		tfCategoria.setOpaque(false);
+		tfCategoria.setFont(new Font("Consolas", Font.PLAIN, 24));
+		tfCategoria.setBounds(346, 95, 246, 29);
+		frame.getContentPane().add(tfCategoria);
+		tfCategoria.setColumns(10);
 
 		tfNombre = new JTextField();
 		tfNombre.setForeground(new Color(255, 255, 255));
 		tfNombre.setBorder(null);
 		tfNombre.setHorizontalAlignment(SwingConstants.LEFT);
-		tfNombre.setText("Pikachu");
 		tfNombre.setFont(new Font("Consolas", Font.BOLD, 24));
 		tfNombre.setEditable(false);
 		tfNombre.setOpaque(false);
 		tfNombre.setBounds(346, 55, 220, 35);
 		frame.getContentPane().add(tfNombre);
 		tfNombre.setColumns(10);
-		lblImgBackground.setIcon(new ImageIcon(background));
-		lblImgBackground.setSize(750, 500);
+		
+		// Cruz y cursores
+		lblCrossHoriz = new JPanel();
+		lblCrossHoriz.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblCrossHoriz.setBackground(new Color(0, 0, 0));
+		lblCrossHoriz.setBounds(524, 345, 103, 36);
+		frame.getContentPane().add(lblCrossHoriz);
+		lblCrossHoriz.setLayout(null);
+		
+		btnBack = new JButton("<");
+		btnBack.setMargin(new Insets(1, 1, 1, 1));
+		btnBack.setBorderPainted(false);
+		btnBack.setOpaque(false);
+		btnBack.setContentAreaFilled(false);
+		btnBack.setBorderPainted(false);
+		btnBack.setForeground(Color.WHITE);
+		btnBack.setFont(new Font("Arial Black", Font.PLAIN, 14));
+		btnBack.setBounds(0, 0, 39, 36);
+		lblCrossHoriz.add(btnBack);
+		
+		btnForward = new JButton(">");
+		btnForward.setOpaque(false);
+		btnForward.setContentAreaFilled(false);
+		btnForward.setBorderPainted(false);
+		btnForward.setMargin(new Insets(1, 1, 1, 1));
+		btnForward.setActionCommand(">");
+		btnForward.setForeground(Color.WHITE);
+		btnForward.setFont(new Font("Arial Black", Font.PLAIN, 14));
+		btnForward.setBorderPainted(false);
+		btnForward.setBounds(64, 0, 39, 36);
+		lblCrossHoriz.add(btnForward);
 
-		lblImgBackground.setBounds(0, 0, 699, 450);
-		frame.getContentPane().add(lblImgBackground);
-		frame.setBounds(100, 100, 713, 487);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		lblCrossVertic = new JPanel();
+		lblCrossVertic.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblCrossVertic.setBackground(new Color(0, 0, 0));
+		lblCrossVertic.setBounds(558, 312, 36, 103);
+		frame.getContentPane().add(lblCrossVertic);
+
+		// Botones y otros detalles
+		btnEliminar = new JButton("ELIMINAR");
+		btnEliminar.setMargin(new Insets(1, 1, 1, 1));
+		btnEliminar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnEliminar.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnEliminar.setBounds(365, 323, 137, 36);
+		frame.getContentPane().add(btnEliminar);
+
+		btnModificar = new JButton("MODIFICAR");
+		btnModificar.setMargin(new Insets(1, 1, 1, 1));
+		btnModificar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnModificar.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnModificar.setBounds(218, 369, 137, 36);
+		frame.getContentPane().add(btnModificar);
+
+		btnNewButton = new JButton("CREAR");
+		btnNewButton.setMargin(new Insets(1, 1, 1, 1));
+		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnNewButton.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnNewButton.setBounds(71, 323, 137, 36);
+		frame.getContentPane().add(btnNewButton);
+		
+		btnGuardar = new JButton("GUARDAR");
+		btnGuardar.setMargin(new Insets(1, 1, 1, 1));
+		btnGuardar.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnGuardar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnGuardar.setBounds(71, 369, 137, 36);
+		frame.getContentPane().add(btnGuardar);
+		
+		btnModificarCancelar = new JButton("CANCELAR");
+		btnModificarCancelar.setMargin(new Insets(1, 1, 1, 1));
+		btnModificarCancelar.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnModificarCancelar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnModificarCancelar.setBounds(365, 369, 137, 36);
+		frame.getContentPane().add(btnModificarCancelar);
+		
+		lblAlmohadilla = new JLabel("#");
+		lblAlmohadilla.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAlmohadilla.setForeground(Color.WHITE);
+		lblAlmohadilla.setFont(new Font("Consolas", Font.PLAIN, 26));
+		lblAlmohadilla.setBounds(576, 55, 54, 43);
+		frame.getContentPane().add(lblAlmohadilla);
+		
 
 	}
+	
+	private void configureUIListeners() {
+		btnForward.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				index++;
+				if (index == pokemons.size()) {
+					index = 0;
+				}
+				printPokemon();
+			}
+		});
+		
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				index--;
+				if (index < 0) {
+					index = pokemons.size()-1;
+				}
+				printPokemon();
+			}
+		});
+	}
+	
+	private void printPokemon() {
+		Pokemon pokemon = pokemons.get(index);
+		
+		tfId.setText(String.valueOf(pokemon.getId()));
+		tfNombre.setText(pokemon.getNombre());
+		tfTipo1.setText(pokemon.getTipo1());
+		tfTipo2.setText(pokemon.getTipo2());
+		tfCategoria.setText(pokemon.getCategoria());
+		tfHabilidad.setText(pokemon.getHabilidad());
+		tfHeight.setText(String.valueOf(pokemon.getAltura()));
+		tfWeight.setText(String.valueOf(pokemon.getPeso()));
+	}
+	
+	private void interruptorEditar() {
+		tfNombre.setEditable(!tfNombre.isEditable());
+	}
+	
+	
 }
