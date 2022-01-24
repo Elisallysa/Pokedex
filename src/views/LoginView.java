@@ -114,21 +114,21 @@ public class LoginView {
 		btnSignIn.setVerticalAlignment(SwingConstants.BOTTOM);
 		btnSignIn.setFont(new Font("Consolas", Font.PLAIN, 18));
 		
-			btnLogin = new JButton("Login");
-			btnLogin.setBounds(39, 195, 147, 36);
-			pnlGreenScreen.add(btnLogin);
-			btnLogin.setVerticalAlignment(SwingConstants.BOTTOM);
-			btnLogin.setForeground(Color.DARK_GRAY);
-			btnLogin.setFont(new Font("Consolas", Font.PLAIN, 18));
+		btnLogin = new JButton("Login");
+		btnLogin.setBounds(39, 195, 147, 36);
+		pnlGreenScreen.add(btnLogin);
+		btnLogin.setVerticalAlignment(SwingConstants.BOTTOM);
+		btnLogin.setForeground(Color.DARK_GRAY);
+		btnLogin.setFont(new Font("Consolas", Font.PLAIN, 18));
 			
-			txtfUser = new JTextField();
-			txtfUser.setBounds(142, 88, 210, 36);
-			pnlGreenScreen.add(txtfUser);
-			txtfUser.setColumns(10);
+		txtfUser = new JTextField();
+		txtfUser.setBounds(142, 88, 210, 36);
+		pnlGreenScreen.add(txtfUser);
+		txtfUser.setColumns(10);
 			
-			pwfPassword = new JPasswordField();
-			pwfPassword.setBounds(142, 134, 210, 36);
-			pnlGreenScreen.add(pwfPassword);
+		pwfPassword = new JPasswordField();
+		pwfPassword.setBounds(142, 134, 210, 36);
+		pnlGreenScreen.add(pwfPassword);
 		
 		pnlGreyScreen = new JPanel();
 		pnlGreyScreen.setBackground(new Color(119, 136, 153));
@@ -186,8 +186,9 @@ public class LoginView {
 				
 				if (loggedIn) {
 					JOptionPane.showMessageDialog(btnLogin, "¡Login correcto!");
-					new PokedexView();
 					frame.dispose();
+					new PokedexView();
+					
 				} else {
 					JOptionPane.showMessageDialog(btnLogin, "Nombre de usuario o contraseña inválidos.");
 				}

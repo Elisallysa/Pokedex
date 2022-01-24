@@ -183,18 +183,18 @@ public class RegisterView {
 				String password = new String(pwfPassword.getPassword());
 				String confirmedPassword = new String(pwfConfirmPassword.getPassword());
 
-				if (password.equals(confirmedPassword)) {
-					if (!username.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) {
+				if (!username.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) {
+					if (password.equals(confirmedPassword)) {
 						User u = new User(0, username, password);
 						userDAO.register(u);
 						JOptionPane.showMessageDialog(btnRegisterUser, "¡Gracias por unirte!");
 						new LoginView();
 						frame.dispose();
 					} else {
-						JOptionPane.showMessageDialog(btnRegisterUser, "Completa todos los campos.");
+						JOptionPane.showMessageDialog(btnRegisterUser, "Las contraseñas no coinciden.");
 					}
 				} else {
-					JOptionPane.showMessageDialog(btnRegisterUser, "Las contraseñas no coinciden.");
+					JOptionPane.showMessageDialog(btnRegisterUser, "Completa todos los campos.");
 				}
 			}
 
