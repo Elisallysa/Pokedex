@@ -55,7 +55,8 @@ public class PokemonDAO extends AbstractDAO {
 	}
 
 	public void insert(Pokemon pokemon) {
-		final String INSERT = "INSERT INTO pokemon VALUES ("+pokemon.getId()+", '"+pokemon.getNombre()+"', '"+pokemon.getTipo1()+"', '"+pokemon.getTipo2()+"', "+pokemon.getAltura()+", "+pokemon.getPeso()+", '"+pokemon.getCategoria()+"', '"+pokemon.getHabilidad()+"')";
+		final String INSERT = "INSERT INTO pokemon VALUES ("+pokemon.getId()+", '"+pokemon.getNombre()+"', '"+pokemon.getTipo1()+"', '"+pokemon.getTipo2()+
+								"', "+pokemon.getAltura()+", "+pokemon.getPeso()+", '"+pokemon.getCategoria()+"', '"+pokemon.getHabilidad()+"')";
 		try {
 			stmt.executeUpdate(INSERT);
 		} catch (SQLException e) {
@@ -64,9 +65,20 @@ public class PokemonDAO extends AbstractDAO {
 	}
 
 	public void delete(Pokemon pokemon) {
-		final String DELETE = "DELETE * FROM pokemon WHERE id = " + pokemon.getId();
+		final String DELETE = "DELETE FROM pokemon WHERE id = " + pokemon.getId();
 		try {
 			stmt.executeUpdate(DELETE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void update(Pokemon pokemon) {
+		final String UPDATE = "UPDATE pokemon SET nombre = '"+pokemon.getNombre()+"', tipo1 = '"+pokemon.getTipo1()+"', tipo2 = '"+pokemon.getTipo2()+
+				"', altura = "+pokemon.getAltura()+", peso = "+pokemon.getPeso()+", categoria = '"+pokemon.getCategoria()+"', habilidad = '"+pokemon.getHabilidad()+"'"+
+				"WHERE id = "+pokemon.getId();
+		try {
+			stmt.executeUpdate(UPDATE);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

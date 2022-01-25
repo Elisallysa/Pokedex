@@ -47,10 +47,9 @@ public class PokedexView {
 	private JPanel lblCrossVertic;
 	private JButton btnEliminar;
 	private JButton btnModificar;
-	private JButton btnNewButton;
+	private JButton btnCrear;
 	private JButton btnBack;
 	private JButton btnGuardar;
-	private JButton btnModificarCancelar;
 	private JButton btnForward;
 	private PokemonDAO pokemonDAO;
 	private Pokemon pokemon;
@@ -79,6 +78,7 @@ public class PokedexView {
 		
 		//Para que se vea la imagen de fondo tengo que dejarlo aquí, no puedo meterlo en el método configureUIComponents():
 		lblImgBackground = new JLabel("fondo");
+		lblImgBackground.setBackground(Color.RED);
 		lblImgBackground.setFont(new Font("Consolas", Font.PLAIN, 16));
 		lblImgBackground.setBounds(0, -23, 766, 445);
 		frame.getContentPane().add(lblImgBackground);
@@ -127,6 +127,7 @@ public class PokedexView {
 
 		tfHabilidad = new JTextField();
 		tfHabilidad.setHorizontalAlignment(SwingConstants.CENTER);
+		tfHabilidad.setEditable(false);
 		tfHabilidad.setBorder(null);
 		tfHabilidad.setOpaque(false);
 		tfHabilidad.setBounds(300, 154, 84, 62);
@@ -146,6 +147,7 @@ public class PokedexView {
 		tfWeight = new JTextField();
 		tfWeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfWeight.setOpaque(false);
+		tfWeight.setEditable(false);
 		tfWeight.setFont(new Font("Consolas", Font.PLAIN, 24));
 		tfWeight.setColumns(10);
 		tfWeight.setBorder(null);
@@ -155,6 +157,7 @@ public class PokedexView {
 		tfHeight = new JTextField();
 		tfHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfHeight.setOpaque(false);
+		tfHeight.setEditable(false);
 		tfHeight.setFont(new Font("Consolas", Font.PLAIN, 24));
 		tfHeight.setBorder(null);
 		tfHeight.setBounds(482, 199, 67, 35);
@@ -184,6 +187,7 @@ public class PokedexView {
 		tfCategoria = new JTextField();
 		tfCategoria.setBorder(null);
 		tfCategoria.setOpaque(false);
+		tfCategoria.setEditable(false);
 		tfCategoria.setFont(new Font("Consolas", Font.PLAIN, 24));
 		tfCategoria.setBounds(346, 95, 246, 29);
 		frame.getContentPane().add(tfCategoria);
@@ -242,36 +246,30 @@ public class PokedexView {
 		btnEliminar.setMargin(new Insets(1, 1, 1, 1));
 		btnEliminar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnEliminar.setFont(new Font("Courier New", Font.BOLD, 18));
-		btnEliminar.setBounds(365, 323, 137, 36);
+		btnEliminar.setBounds(71, 369, 209, 36);
 		frame.getContentPane().add(btnEliminar);
 
-		btnModificar = new JButton("MODIFICAR");
+		btnModificar = new JButton("MODO EDICI\u00D3N");
 		btnModificar.setMargin(new Insets(1, 1, 1, 1));
 		btnModificar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnModificar.setFont(new Font("Courier New", Font.BOLD, 18));
-		btnModificar.setBounds(218, 369, 137, 36);
+		btnModificar.setBounds(285, 323, 209, 36);
 		frame.getContentPane().add(btnModificar);
 
-		btnNewButton = new JButton("CREAR");
-		btnNewButton.setMargin(new Insets(1, 1, 1, 1));
-		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnNewButton.setFont(new Font("Courier New", Font.BOLD, 18));
-		btnNewButton.setBounds(71, 323, 137, 36);
-		frame.getContentPane().add(btnNewButton);
+		btnCrear = new JButton("CREAR");
+		btnCrear.setMargin(new Insets(1, 1, 1, 1));
+		btnCrear.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnCrear.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnCrear.setBounds(71, 323, 209, 36);
+		frame.getContentPane().add(btnCrear);
 		
 		btnGuardar = new JButton("GUARDAR");
+		btnGuardar.setVisible(false);
 		btnGuardar.setMargin(new Insets(1, 1, 1, 1));
 		btnGuardar.setFont(new Font("Courier New", Font.BOLD, 18));
 		btnGuardar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnGuardar.setBounds(71, 369, 137, 36);
+		btnGuardar.setBounds(285, 369, 209, 36);
 		frame.getContentPane().add(btnGuardar);
-		
-		btnModificarCancelar = new JButton("CANCELAR");
-		btnModificarCancelar.setMargin(new Insets(1, 1, 1, 1));
-		btnModificarCancelar.setFont(new Font("Courier New", Font.BOLD, 18));
-		btnModificarCancelar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnModificarCancelar.setBounds(365, 369, 137, 36);
-		frame.getContentPane().add(btnModificarCancelar);
 		
 		lblAlmohadilla = new JLabel("#");
 		lblAlmohadilla.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -306,27 +304,64 @@ public class PokedexView {
 	
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int confirmar = JOptionPane.showConfirmDialog(btnEliminar, "¿Estás seguro de que quieres eliminar este Pokémon?");
-				if (confirmar == 0) {
+				int confirmar = JOptionPane.showConfirmDialog(btnEliminar, "¿Estás seguro de que quieres eliminar este Pokémon?", "Confirmar eliminar", 
+						JOptionPane.YES_NO_OPTION,
+			            JOptionPane.QUESTION_MESSAGE);
+				if (confirmar == JOptionPane.YES_OPTION) {
 					pokemonDAO.delete(pokemons.get(index));
 					pokemons.remove(pokemons.get(index));
 					if (pokemons.size()>0) {
 						printBack();
 					} else {
-						JOptionPane.showMessageDialog(btnBack, "No hay Pokémon en la Pokedex.");
+						JOptionPane.showMessageDialog(btnEliminar, "No hay Pokémon en la Pokedex.");
+						printEmpty();
 					}
-				} else if (confirmar == 1) {
-					
 				} else {
-					
+						JOptionPane.showMessageDialog(btnEliminar, "Ningún Pokémon eliminado.");
 				}
 			}
 		});	
+		
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				interruptorEditar();
+				btnGuardar.setVisible(true);
+				
+				btnGuardar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							updatePokemon();
+							pokemonDAO.update(pokemons.get(index));
+							interruptorEditar();
+						}catch(Exception errorUpdate) {
+							System.out.println("¿Has introducido los datos correctos?");
+						}
+					}
+				});
+			}
+		});
 	
 	}
 	
 	private void printPokemon() {
-		Pokemon pokemon = pokemons.get(index);
+		pokemon = pokemons.get(index);
+		if (!pokemons.isEmpty()) {
+			tfId.setText(String.valueOf(pokemon.getId()));
+		tfNombre.setText(pokemon.getNombre());
+		tfTipo1.setText(pokemon.getTipo1());
+		tfTipo2.setText(pokemon.getTipo2());
+		tfCategoria.setText(pokemon.getCategoria());
+		tfHabilidad.setText(pokemon.getHabilidad());
+		tfHeight.setText(String.valueOf(pokemon.getAltura()));
+		tfWeight.setText(String.valueOf(pokemon.getPeso()));
+		} else {
+			printEmpty();
+		}
+		
+	}
+	
+	private void printBack() {
+		pokemon = pokemons.get(index - 1);
 		
 		tfId.setText(String.valueOf(pokemon.getId()));
 		tfNombre.setText(pokemon.getNombre());
@@ -338,21 +373,41 @@ public class PokedexView {
 		tfWeight.setText(String.valueOf(pokemon.getPeso()));
 	}
 	
-	private void printBack() {
-		Pokemon pokemon = pokemons.get(index - 1);
+	private void printEmpty() {
 		
-		tfId.setText(String.valueOf(pokemon.getId()));
-		tfNombre.setText(pokemon.getNombre());
-		tfTipo1.setText(pokemon.getTipo1());
-		tfTipo2.setText(pokemon.getTipo2());
-		tfCategoria.setText(pokemon.getCategoria());
-		tfHabilidad.setText(pokemon.getHabilidad());
-		tfHeight.setText(String.valueOf(pokemon.getAltura()));
-		tfWeight.setText(String.valueOf(pokemon.getPeso()));
+		tfId.setText("");
+		tfNombre.setText("");
+		tfTipo1.setText("");
+		tfTipo2.setText("");
+		tfCategoria.setText("");
+		tfHabilidad.setText("");
+		tfHeight.setText("");
+		tfWeight.setText("");
 	}
 	
 	private void interruptorEditar() {
 		tfNombre.setEditable(!tfNombre.isEditable());
+		tfTipo1.setEditable(!tfTipo1.isEditable());
+		tfTipo2.setEditable(!tfTipo2.isEditable());
+		tfCategoria.setEditable(!tfCategoria.isEditable());
+		tfHabilidad.setEditable(!tfHabilidad.isEditable());
+		tfHeight.setEditable(!tfHeight.isEditable());
+		tfWeight.setEditable(!tfWeight.isEditable());
+		btnBack.setVisible(!btnBack.isVisible());
+		btnForward.setVisible(!btnForward.isVisible());
+		btnEliminar.setVisible(!btnEliminar.isVisible());
+		btnCrear.setVisible(!btnCrear.isVisible());
+	}
+	
+	private void updatePokemon() {
+		Pokemon p = pokemons.get(index);
+		p.setNombre(tfNombre.getText());
+		p.setTipo1(tfTipo1.getText());
+		p.setTipo2(tfTipo2.getText());
+		p.setAltura(Double.parseDouble(tfHeight.getText()));
+		p.setPeso(Double.parseDouble(tfWeight.getText()));
+		p.setCategoria(tfCategoria.getText());
+		p.setHabilidad(tfHabilidad.getText());
 	}
 	
 	
