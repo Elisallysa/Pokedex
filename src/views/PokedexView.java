@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import javax.swing.JTextField;
@@ -302,10 +303,43 @@ public class PokedexView {
 				printPokemon();
 			}
 		});
+	
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int confirmar = JOptionPane.showConfirmDialog(btnEliminar, "¿Estás seguro de que quieres eliminar este Pokémon?");
+				if (confirmar == 0) {
+					pokemonDAO.delete(pokemons.get(index));
+					pokemons.remove(pokemons.get(index));
+					if (pokemons.size()>0) {
+						printBack();
+					} else {
+						JOptionPane.showMessageDialog(btnBack, "No hay Pokémon en la Pokedex.");
+					}
+				} else if (confirmar == 1) {
+					
+				} else {
+					
+				}
+			}
+		});	
+	
 	}
 	
 	private void printPokemon() {
 		Pokemon pokemon = pokemons.get(index);
+		
+		tfId.setText(String.valueOf(pokemon.getId()));
+		tfNombre.setText(pokemon.getNombre());
+		tfTipo1.setText(pokemon.getTipo1());
+		tfTipo2.setText(pokemon.getTipo2());
+		tfCategoria.setText(pokemon.getCategoria());
+		tfHabilidad.setText(pokemon.getHabilidad());
+		tfHeight.setText(String.valueOf(pokemon.getAltura()));
+		tfWeight.setText(String.valueOf(pokemon.getPeso()));
+	}
+	
+	private void printBack() {
+		Pokemon pokemon = pokemons.get(index - 1);
 		
 		tfId.setText(String.valueOf(pokemon.getId()));
 		tfNombre.setText(pokemon.getNombre());
