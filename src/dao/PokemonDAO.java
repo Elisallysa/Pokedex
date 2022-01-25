@@ -1,19 +1,13 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import models.Pokemon;
-import views.PokedexView;
 
 public class PokemonDAO extends AbstractDAO {
 
-	private PokedexView pokedex;
-	
 	public Pokemon first() {
 		final String QUERY = "SELECT * FROM pokemon LIMIT 1";
 		try {
@@ -36,7 +30,7 @@ public class PokemonDAO extends AbstractDAO {
 		return null;
 
 	}
-	
+
 	public ArrayList<Pokemon> getAll() {
 		final String QUERY = "SELECT * FROM pokemon";
 		var pokemons = new ArrayList<Pokemon>();
@@ -58,5 +52,23 @@ public class PokemonDAO extends AbstractDAO {
 			e.printStackTrace();
 		}
 		return pokemons;
+	}
+
+	public void insert(Pokemon pokemon) {
+		final String INSERT = "INSERT INTO pokemon VALUES ("+pokemon.getId()+", '"+pokemon.getNombre()+"', '"+pokemon.getTipo1()+"', '"+pokemon.getTipo2()+"', "+pokemon.getAltura()+", "+pokemon.getPeso()+", '"+pokemon.getCategoria()+"', '"+pokemon.getHabilidad()+"')";
+		try {
+			stmt.executeUpdate(INSERT);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void delete(Pokemon pokemon) {
+		final String DELETE = "DELETE * FROM pokemon WHERE id = " + pokemon.getId();
+		try {
+			stmt.executeUpdate(DELETE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
