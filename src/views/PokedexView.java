@@ -346,21 +346,8 @@ public class PokedexView {
 
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				printEmpty();
-				interruptorEditar();
-				btnGuardar.setVisible(true);
-
-				btnGuardar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						try {
-							createPokemon();
-							interruptorEditar();
-						} catch (Exception errorUpdate) {
-							System.out.println("¿Has introducido los datos correctos?");
-						}
-					}
-				});
-
+				frame.dispose();
+				new PokeCreatorView();
 			}
 		});
 
@@ -445,13 +432,15 @@ public class PokedexView {
 		pokemon.setHabilidad(tfHabilidad.getText());
 	}
 	
-	private void loadImage(Pokemon pokemon) {
-		
-		
+	/**
+	 * private void loadImage(Pokemon pokemon) {
 		lblPokeImage = new JLabel("pokeimg");
 		lblPokeImage.setBounds(20, 53, 270, 240);
 		frame.getContentPane().add(lblPokeImage);
 		pokephoto = new ImageIcon(this.getClass().getResource("/"+pokemons.get(index).getId()+".png").getFile());
 		lblPokeImage.setIcon(new ImageIcon());
 	}
+	 * 
+	 */
+	
 }
