@@ -31,7 +31,9 @@ public class PokedexView {
 
 	private JFrame frame;
 	private JLabel lblImgBackground;
+	private JLabel lblPokeImage;
 	private Image background;
+	private ImageIcon pokephoto;
 	private JTextField tfId;
 	private JTextField tfNombre;
 	private JTextField tfCategoria;
@@ -56,27 +58,27 @@ public class PokedexView {
 	private JLabel lblAlmohadilla;
 	private ArrayList<Pokemon> pokemons;
 	private int index;
-	
 
 	/**
 	 * Create the application.
 	 */
 	public PokedexView() {
 		initialize();
-		//Imprimiremos el primer Pokemon con el índice inicializado a 0 (si en la BD hay mínimo 1 Pokemon almacenado):
+		// Imprimiremos el primer Pokemon con el índice inicializado a 0 (si en la BD
+		// hay mínimo 1 Pokemon almacenado):
 		this.pokemonDAO = new PokemonDAO();
 		this.pokemons = pokemonDAO.getAll();
 		index = 0;
 		/**
-		 * Para probar la impresión del Pokemon, se usó este método de la clase pokemonDAO en un principio:
-		 * pokemon = pokemonDAO.first(); 
+		 * Para probar la impresión del Pokemon, se usó este método de la clase
+		 * pokemonDAO en un principio: pokemon = pokemonDAO.first();
 		 */
-		if (this.pokemons.size()>0) {
+		if (this.pokemons.size() > 0) {
 			printPokemon();
 		}
-		
-		
-		//Para que se vea la imagen de fondo tengo que dejarlo aquí, no puedo meterlo en el método configureUIComponents():
+
+		// Para que se vea la imagen de fondo tengo que dejarlo aquí, no puedo meterlo
+		// en el método configureUIComponents():
 		lblImgBackground = new JLabel("fondo");
 		lblImgBackground.setBackground(Color.RED);
 		lblImgBackground.setFont(new Font("Consolas", Font.PLAIN, 16));
@@ -116,7 +118,7 @@ public class PokedexView {
 		tfId.setBorder(null);
 		tfId.setBounds(635, 55, 54, 43);
 		frame.getContentPane().add(tfId);
-		
+
 		lblHabilidad = new JLabel("Habilidad");
 		lblHabilidad.setForeground(new Color(255, 255, 255));
 		lblHabilidad.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -203,7 +205,8 @@ public class PokedexView {
 		tfNombre.setBounds(346, 55, 220, 35);
 		frame.getContentPane().add(tfNombre);
 		tfNombre.setColumns(10);
-		
+
+
 		// Cruz y cursores
 		lblCrossHoriz = new JPanel();
 		lblCrossHoriz.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -211,7 +214,7 @@ public class PokedexView {
 		lblCrossHoriz.setBounds(524, 345, 103, 36);
 		frame.getContentPane().add(lblCrossHoriz);
 		lblCrossHoriz.setLayout(null);
-		
+
 		btnBack = new JButton("<");
 		btnBack.setMargin(new Insets(1, 1, 1, 1));
 		btnBack.setBorderPainted(false);
@@ -222,7 +225,7 @@ public class PokedexView {
 		btnBack.setFont(new Font("Arial Black", Font.PLAIN, 14));
 		btnBack.setBounds(0, 0, 39, 36);
 		lblCrossHoriz.add(btnBack);
-		
+
 		btnForward = new JButton(">");
 		btnForward.setOpaque(false);
 		btnForward.setContentAreaFilled(false);
@@ -257,12 +260,13 @@ public class PokedexView {
 		frame.getContentPane().add(btnModificar);
 
 		btnCrear = new JButton("CREAR");
+
 		btnCrear.setMargin(new Insets(1, 1, 1, 1));
 		btnCrear.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnCrear.setFont(new Font("Courier New", Font.BOLD, 18));
 		btnCrear.setBounds(71, 323, 209, 36);
 		frame.getContentPane().add(btnCrear);
-		
+
 		btnGuardar = new JButton("GUARDAR");
 		btnGuardar.setVisible(false);
 		btnGuardar.setMargin(new Insets(1, 1, 1, 1));
@@ -270,17 +274,16 @@ public class PokedexView {
 		btnGuardar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnGuardar.setBounds(285, 369, 209, 36);
 		frame.getContentPane().add(btnGuardar);
-		
+
 		lblAlmohadilla = new JLabel("#");
 		lblAlmohadilla.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAlmohadilla.setForeground(Color.WHITE);
 		lblAlmohadilla.setFont(new Font("Consolas", Font.PLAIN, 26));
 		lblAlmohadilla.setBounds(576, 55, 54, 43);
 		frame.getContentPane().add(lblAlmohadilla);
-		
 
 	}
-	
+
 	private void configureUIListeners() {
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -291,78 +294,98 @@ public class PokedexView {
 				printPokemon();
 			}
 		});
-		
+
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				index--;
 				if (index < 0) {
-					index = pokemons.size()-1;
+					index = pokemons.size() - 1;
 				}
 				printPokemon();
 			}
 		});
-	
+
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int confirmar = JOptionPane.showConfirmDialog(btnEliminar, "¿Estás seguro de que quieres eliminar este Pokémon?", "Confirmar eliminar", 
-						JOptionPane.YES_NO_OPTION,
-			            JOptionPane.QUESTION_MESSAGE);
+				int confirmar = JOptionPane.showConfirmDialog(btnEliminar,
+						"¿Estás seguro de que quieres eliminar este Pokémon?", "Confirmar eliminar",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (confirmar == JOptionPane.YES_OPTION) {
 					pokemonDAO.delete(pokemons.get(index));
 					pokemons.remove(pokemons.get(index));
-					if (pokemons.size()>0) {
+					if (pokemons.size() > 0) {
 						printBack();
 					} else {
 						JOptionPane.showMessageDialog(btnEliminar, "No hay Pokémon en la Pokedex.");
 						printEmpty();
 					}
 				} else {
-						JOptionPane.showMessageDialog(btnEliminar, "Ningún Pokémon eliminado.");
+					JOptionPane.showMessageDialog(btnEliminar, "Ningún Pokémon eliminado.");
 				}
 			}
-		});	
-		
+		});
+
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interruptorEditar();
 				btnGuardar.setVisible(true);
-				
+
 				btnGuardar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
 							updatePokemon();
 							pokemonDAO.update(pokemons.get(index));
 							interruptorEditar();
-						}catch(Exception errorUpdate) {
+						} catch (Exception errorUpdate) {
 							System.out.println("¿Has introducido los datos correctos?");
 						}
 					}
 				});
 			}
 		});
-	
+
+		btnCrear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				printEmpty();
+				interruptorEditar();
+				btnGuardar.setVisible(true);
+
+				btnGuardar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							createPokemon();
+							interruptorEditar();
+						} catch (Exception errorUpdate) {
+							System.out.println("¿Has introducido los datos correctos?");
+						}
+					}
+				});
+
+			}
+		});
+
 	}
-	
+
 	private void printPokemon() {
 		pokemon = pokemons.get(index);
 		if (!pokemons.isEmpty()) {
 			tfId.setText(String.valueOf(pokemon.getId()));
-		tfNombre.setText(pokemon.getNombre());
-		tfTipo1.setText(pokemon.getTipo1());
-		tfTipo2.setText(pokemon.getTipo2());
-		tfCategoria.setText(pokemon.getCategoria());
-		tfHabilidad.setText(pokemon.getHabilidad());
-		tfHeight.setText(String.valueOf(pokemon.getAltura()));
-		tfWeight.setText(String.valueOf(pokemon.getPeso()));
+			tfNombre.setText(pokemon.getNombre());
+			tfTipo1.setText(pokemon.getTipo1());
+			tfTipo2.setText(pokemon.getTipo2());
+			tfCategoria.setText(pokemon.getCategoria());
+			tfHabilidad.setText(pokemon.getHabilidad());
+			tfHeight.setText(String.valueOf(pokemon.getAltura()));
+			tfWeight.setText(String.valueOf(pokemon.getPeso()));
 		} else {
 			printEmpty();
 		}
-		
+
 	}
-	
+
 	private void printBack() {
 		pokemon = pokemons.get(index - 1);
-		
+
 		tfId.setText(String.valueOf(pokemon.getId()));
 		tfNombre.setText(pokemon.getNombre());
 		tfTipo1.setText(pokemon.getTipo1());
@@ -372,9 +395,8 @@ public class PokedexView {
 		tfHeight.setText(String.valueOf(pokemon.getAltura()));
 		tfWeight.setText(String.valueOf(pokemon.getPeso()));
 	}
-	
+
 	private void printEmpty() {
-		
 		tfId.setText("");
 		tfNombre.setText("");
 		tfTipo1.setText("");
@@ -384,7 +406,7 @@ public class PokedexView {
 		tfHeight.setText("");
 		tfWeight.setText("");
 	}
-	
+
 	private void interruptorEditar() {
 		tfNombre.setEditable(!tfNombre.isEditable());
 		tfTipo1.setEditable(!tfTipo1.isEditable());
@@ -398,17 +420,38 @@ public class PokedexView {
 		btnEliminar.setVisible(!btnEliminar.isVisible());
 		btnCrear.setVisible(!btnCrear.isVisible());
 	}
-	
+
 	private void updatePokemon() {
-		Pokemon p = pokemons.get(index);
-		p.setNombre(tfNombre.getText());
-		p.setTipo1(tfTipo1.getText());
-		p.setTipo2(tfTipo2.getText());
-		p.setAltura(Double.parseDouble(tfHeight.getText()));
-		p.setPeso(Double.parseDouble(tfWeight.getText()));
-		p.setCategoria(tfCategoria.getText());
-		p.setHabilidad(tfHabilidad.getText());
+		Pokemon pokemon = pokemons.get(index);
+		setInfoPokemon(pokemon);
+	}
+
+	private void createPokemon() {
+		int lastIndexArray = pokemons.size()-1;
+		int lastPokemonIndex = (pokemons.get(lastIndexArray).getId()+1);
+		Pokemon pokemon = new Pokemon(lastPokemonIndex, null, null, null, index, index, null, null);
+		setInfoPokemon(pokemon);
+		pokemons.add(pokemon);
+		pokemonDAO.insert(pokemons.get(pokemons.lastIndexOf(pokemon)));
+	}
+
+	private void setInfoPokemon(Pokemon pokemon) {
+		pokemon.setNombre(tfNombre.getText());
+		pokemon.setTipo1(tfTipo1.getText());
+		pokemon.setTipo2(tfTipo2.getText());
+		pokemon.setAltura(Double.parseDouble(tfHeight.getText()));
+		pokemon.setPeso(Double.parseDouble(tfWeight.getText()));
+		pokemon.setCategoria(tfCategoria.getText());
+		pokemon.setHabilidad(tfHabilidad.getText());
 	}
 	
-	
+	private void loadImage(Pokemon pokemon) {
+		
+		
+		lblPokeImage = new JLabel("pokeimg");
+		lblPokeImage.setBounds(20, 53, 270, 240);
+		frame.getContentPane().add(lblPokeImage);
+		pokephoto = new ImageIcon(this.getClass().getResource("/"+pokemons.get(index).getId()+".png").getFile());
+		lblPokeImage.setIcon(new ImageIcon());
+	}
 }
