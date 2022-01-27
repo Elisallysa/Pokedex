@@ -55,7 +55,7 @@ public class PokemonDAO extends AbstractDAO {
 	}
 
 	public void insert(Pokemon pokemon) {
-		final String INSERT = "INSERT INTO pokemon VALUES ("+pokemon.getId()+", '"+pokemon.getNombre()+"', '"+pokemon.getTipo1()+"', '"+pokemon.getTipo2()+
+		final String INSERT = "INSERT INTO pokemon VALUES ("+pokemon.getId()+", '"+pokemon.getNombre()+"', '"+pokemon.getTipoUno()+"', '"+pokemon.getTipoDos()+
 								"', "+pokemon.getAltura()+", "+pokemon.getPeso()+", '"+pokemon.getCategoria()+"', '"+pokemon.getHabilidad()+"')";
 		try {
 			stmt.executeUpdate(INSERT);
@@ -74,7 +74,7 @@ public class PokemonDAO extends AbstractDAO {
 	}
 	
 	public void update(Pokemon pokemon) {
-		final String UPDATE = "UPDATE pokemon SET nombre = '"+pokemon.getNombre()+"', tipo1 = '"+pokemon.getTipo1()+"', tipo2 = '"+pokemon.getTipo2()+
+		final String UPDATE = "UPDATE pokemon SET nombre = '"+pokemon.getNombre()+"', tipo1 = '"+pokemon.getTipoUno()+"', tipo2 = '"+pokemon.getTipoDos()+
 				"', altura = "+pokemon.getAltura()+", peso = "+pokemon.getPeso()+", categoria = '"+pokemon.getCategoria()+"', habilidad = '"+pokemon.getHabilidad()+"'"+
 				"WHERE id = "+pokemon.getId();
 		try {

@@ -20,12 +20,15 @@ import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
 import dao.PokemonDAO;
+import dao.TipoDAO;
 import models.Pokemon;
+import models.Tipo;
 
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class PokedexView {
 
@@ -53,20 +56,26 @@ public class PokedexView {
 	private JButton btnGuardar;
 	private JButton btnForward;
 	private PokemonDAO pokemonDAO;
+	private TipoDAO tipoDAO;
 	private Pokemon pokemon;
 	private JLabel lblAlmohadilla;
 	private ArrayList<Pokemon> pokemons;
+	private ArrayList<Tipo> tipos;
 	private int index;
+	private JComboBox<String> cbTipo2;
+	private JComboBox<String> cbTipo1;
 
 	/**
 	 * Create the application.
 	 */
 	public PokedexView() {
+		this.tipoDAO = new TipoDAO();
 		initialize();
 		// Imprimiremos el primer Pokemon con el índice inicializado a 0 (si en la BD
 		// hay mínimo 1 Pokemon almacenado):
 		this.pokemonDAO = new PokemonDAO();
 		this.pokemons = pokemonDAO.getAll();
+		
 		index = 0;
 		/**
 		 * Para probar la impresión del Pokemon, se usó este método de la clase
@@ -107,6 +116,17 @@ public class PokedexView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Info Pokemon
+		cbTipo2 = new JComboBox();
+		cbTipo2.setBounds(533, 146, 103, 29);
+		frame.getContentPane().add(cbTipo2);
+		cbTipo2.setVisible(false);
+		
+		cbTipo1 = new JComboBox();
+		cbTipo1.setBounds(409, 146, 103, 29);
+		frame.getContentPane().add(cbTipo1);
+		cbTipo1.setVisible(false);
+		fillTipos();
+		
 		tfId = new JTextField();
 		tfId.setOpaque(false);
 		tfId.setHorizontalAlignment(SwingConstants.LEFT);
@@ -370,8 +390,8 @@ public class PokedexView {
 		if (!pokemons.isEmpty()) {
 			tfId.setText(String.valueOf(pokemon.getId()));
 			tfNombre.setText(pokemon.getNombre());
-			tfTipo1.setText(pokemon.getTipo1());
-			tfTipo2.setText(pokemon.getTipo2());
+			tfTipo1.setText(pokemon.getTipoUno());
+			tfTipo2.setText(pokemon.getTipoDos());
 			tfCategoria.setText(pokemon.getCategoria());
 			tfHabilidad.setText(pokemon.getHabilidad());
 			tfHeight.setText(String.valueOf(pokemon.getAltura()));
@@ -391,8 +411,8 @@ public class PokedexView {
 
 		tfId.setText(String.valueOf(pokemon.getId()));
 		tfNombre.setText(pokemon.getNombre());
-		tfTipo1.setText(pokemon.getTipo1());
-		tfTipo2.setText(pokemon.getTipo2());
+		tfTipo1.setText(pokemon.getTipoUno());
+		tfTipo2.setText(pokemon.getTipoDos());
 		tfCategoria.setText(pokemon.getCategoria());
 		tfHabilidad.setText(pokemon.getHabilidad());
 		tfHeight.setText(String.valueOf(pokemon.getAltura()));
@@ -418,6 +438,8 @@ public class PokedexView {
 		tfHabilidad.setEditable(!tfHabilidad.isEditable());
 		tfHeight.setEditable(!tfHeight.isEditable());
 		tfWeight.setEditable(!tfWeight.isEditable());
+		cbTipo1.setVisible(!cbTipo1.isVisible());
+		cbTipo2.setVisible(!cbTipo2.isVisible());
 		btnBack.setVisible(!btnBack.isVisible());
 		btnForward.setVisible(!btnForward.isVisible());
 		btnEliminar.setVisible(!btnEliminar.isVisible());
@@ -430,9 +452,10 @@ public class PokedexView {
 	}
 
 	private void createPokemon() {
+		
 		int lastIndexArray = pokemons.size()-1;
 		int lastPokemonIndex = (pokemons.get(lastIndexArray).getId()+1);
-		Pokemon pokemon = new Pokemon(lastPokemonIndex, null, null, null, index, index, null, null);
+		Pokemon pokemon = new Pokemon(lastPokemonIndex, null, index, index, null, null);
 		setInfoPokemon(pokemon);
 		pokemons.add(pokemon);
 		pokemonDAO.insert(pokemons.get(pokemons.lastIndexOf(pokemon)));
@@ -440,12 +463,18 @@ public class PokedexView {
 
 	private void setInfoPokemon(Pokemon pokemon) {
 		pokemon.setNombre(tfNombre.getText());
-		pokemon.setTipo1(tfTipo1.getText());
-		pokemon.setTipo2(tfTipo2.getText());
 		pokemon.setAltura(Double.parseDouble(tfHeight.getText()));
 		pokemon.setPeso(Double.parseDouble(tfWeight.getText()));
 		pokemon.setCategoria(tfCategoria.getText());
 		pokemon.setHabilidad(tfHabilidad.getText());
+		
+		Tipo tipoUno = tipos.get(cbTipo1.getSelectedIndex()+1);
+		pokemon.setTipo1(tipoUno);
+		if (cbTipo2.getSelectedIndex() != 0) {
+			Tipo tipoDos = tipos.get(cbTipo2.getSelectedIndex()+2);
+			pokemon.setTipo2(tipoDos);
+		}
+		
 	}
 	
 	private void loadImage(Pokemon pokemon) {
@@ -457,5 +486,14 @@ public class PokedexView {
 		//ImageIcon icon = new ImageIcon(this.getClass().getResource("/"+pokemons.get(index).getId()+".png").getFile());
 		lblPokeImage.setIcon(new ImageIcon("/"+pokemons.get(index).getId()+".png"));
 		
+	}
+	
+	private void fillTipos() {
+		ArrayList<Tipo> tipos = tipoDAO.getAll();
+		cbTipo2.addItem("Ninguno");
+		for(Tipo t: tipos) {
+			cbTipo1.addItem(t.getNombreTipo());
+			cbTipo2.addItem(t.getNombreTipo());
+		}
 	}
 }
