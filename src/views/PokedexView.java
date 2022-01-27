@@ -33,7 +33,6 @@ public class PokedexView {
 	private JLabel lblImgBackground;
 	private JLabel lblPokeImage;
 	private Image background;
-	private ImageIcon pokephoto;
 	private JTextField tfId;
 	private JTextField tfNombre;
 	private JTextField tfCategoria;
@@ -380,6 +379,10 @@ public class PokedexView {
 		} else {
 			printEmpty();
 		}
+		
+		if (index > 0 && index < 9) {
+			loadImage(pokemon);
+		}
 
 	}
 
@@ -447,11 +450,12 @@ public class PokedexView {
 	
 	private void loadImage(Pokemon pokemon) {
 		
-		
 		lblPokeImage = new JLabel("pokeimg");
 		lblPokeImage.setBounds(20, 53, 270, 240);
 		frame.getContentPane().add(lblPokeImage);
-		pokephoto = new ImageIcon(this.getClass().getResource("/"+pokemons.get(index).getId()+".png").getFile());
-		lblPokeImage.setIcon(new ImageIcon());
+		//Image pokephotoImage = GenerateImage.toImage(true);
+		//ImageIcon icon = new ImageIcon(this.getClass().getResource("/"+pokemons.get(index).getId()+".png").getFile());
+		lblPokeImage.setIcon(new ImageIcon("/"+pokemons.get(index).getId()+".png"));
+		
 	}
 }
