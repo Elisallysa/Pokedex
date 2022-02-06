@@ -179,18 +179,15 @@ public class LoginView {
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String username = txtfUser.getText();
-				String password = new String (pwfPassword.getPassword());
-				User usuario = new User(0, username, password);
-				boolean loggedIn = userDAO.login(usuario);
-				
-				if (loggedIn) {
-					JOptionPane.showMessageDialog(btnLogin, "¡Login correcto!");
-					frame.dispose();
-					new PokedexView();
-					
-				} else {
-					JOptionPane.showMessageDialog(btnLogin, "Nombre de usuario o contraseña inválidos.");
+				login();
+			}
+		});
+		
+		pwfPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				login();
 				}
 			}
 		});
@@ -201,5 +198,21 @@ public class LoginView {
 				frame.dispose();
 			}
 		});
+	}
+	
+	public void login() {
+		String username = txtfUser.getText();
+		String password = new String (pwfPassword.getPassword());
+		User usuario = new User(0, username, password);
+		boolean loggedIn = userDAO.login(usuario);
+		
+		if (loggedIn) {
+			JOptionPane.showMessageDialog(btnLogin, "¡Login correcto!");
+			frame.dispose();
+			new PokedexView();
+			
+		} else {
+			JOptionPane.showMessageDialog(btnLogin, "Nombre de usuario o contraseña inválidos.");
+		}
 	}
 }

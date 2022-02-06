@@ -4,20 +4,15 @@ public class Tipo {
 
 	// Atributos
 	private int id;
-	private String nombreTipo;
+	private String nombre;
 
-	
-	
-
-	public Tipo(int id, String nombreTipo) {
+	public Tipo(int id, String nombre) {
 		super();
 		this.id = id;
-		this.nombreTipo = nombreTipo;
+		this.nombre = nombre;
 	}
-
-
+	
 	// Getters & Setters
-
 	public int getId() {
 		return id;
 	}
@@ -28,16 +23,16 @@ public class Tipo {
 
 
 	public String getNombreTipo() {
-		return nombreTipo;
+		return nombre;
 	}
 
 	public void setNombreTipo(String nombreTipo) {
-		this.nombreTipo = nombreTipo;
+		this.nombre = nombreTipo;
 	}
 
 	@Override
 	public String toString() {
-		return "Tipo [id=" + id + ", nombreTipo=" + nombreTipo + "]";
+		return "Tipo [id=" + id + ", nombre=" + nombre + "]";
 	}
 	
 	

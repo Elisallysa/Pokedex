@@ -386,10 +386,6 @@ public class PokedexView {
 		} else {
 			printEmpty();
 		}
-		
-		if (index > 0 && index < 9) {
-			loadImage(pokemon);
-		}
 
 	}
 
@@ -438,8 +434,7 @@ public class PokedexView {
 		setInfoPokemon(pokemon);
 	}
 
-	private void createPokemon() {
-		
+	private void createPokemon() {	
 		int lastIndexArray = pokemons.size()-1;
 		int lastPokemonIndex = (pokemons.get(lastIndexArray).getId()+1);
 		Pokemon pokemon = new Pokemon(lastPokemonIndex, null, index, index, null, null);
@@ -466,7 +461,6 @@ public class PokedexView {
 
 	/**
 	 * private void loadImage(Pokemon pokemon) {
->>>>>>> comboBoxDrama
 		lblPokeImage = new JLabel("pokeimg");
 		lblPokeImage.setBounds(20, 53, 270, 240);
 		frame.getContentPane().add(lblPokeImage);
@@ -475,7 +469,8 @@ public class PokedexView {
 		lblPokeImage.setIcon(new ImageIcon("/"+pokemons.get(index).getId()+".png"));
 		
 	}
-	
+	* 
+	 */
 	private void fillTipos() {
 		ArrayList<Tipo> tipos = tipoDAO.getAll();
 		cbTipo2.addItem("Ninguno");
@@ -484,7 +479,6 @@ public class PokedexView {
 			cbTipo2.addItem(t.getNombreTipo());
 		}
 	}
-	 * 
-	 */
+	 
 	
 }

@@ -42,10 +42,10 @@ public class PokeCreatorView {
 	private JPanel lblCrossVertic;
 	private JButton btnGuardar;
 	private PokemonDAO pokemonDAO;
+	private TipoDAO	tipoDAO;
 	private JLabel lblAlmohadilla;
 	private ArrayList<Pokemon> pokemons;
 	private ArrayList<Tipo> tipos;
-
 	private int index;
 	private JComboBox<String> cbTipo1;
 	private JComboBox<String> cbTipo2;
@@ -54,12 +54,13 @@ public class PokeCreatorView {
 	 * Create the application.
 	 */
 	public PokeCreatorView() {
-		initialize();
 		// Imprimiremos el primer Pokemon con el índice inicializado a 0 (si en la BD
 		// hay mínimo 1 Pokemon almacenado):
 		this.pokemonDAO = new PokemonDAO();
 		this.pokemons = pokemonDAO.getAll();
-
+		this.tipoDAO = new TipoDAO();
+		initialize();
+		
 		index = 0;
 		
 		// Para que se vea la imagen de fondo tengo que dejarlo aquí, no puedo meterlo
@@ -241,9 +242,6 @@ public class PokeCreatorView {
 
 	private void setInfoPokemon(Pokemon pokemon) {
 		pokemon.setNombre(tfNombre.getText());
-		pokemon.setTipo1(tipos.get(cbTipo1.getSelectedIndex()).getNombreTipo());
-		
-		pokemon.setTipo2(tipos.get(cbTipo2.getSelectedIndex()).getNombreTipo());
 		pokemon.setAltura(Double.parseDouble(tfHeight.getText()));
 		pokemon.setPeso(Double.parseDouble(tfWeight.getText()));
 		pokemon.setCategoria(tfCategoria.getText());

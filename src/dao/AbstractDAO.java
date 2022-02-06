@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public abstract class AbstractDAO {
 	// Estos atributos no va a ser necesario verlos en las clases hijas:
-	private final String DB_URL = "jdbc:mysql://localhost/test";
+	private final String DB_URL = "jdbc:mysql://localhost/pokedex";
 	private final String USER = "Rawdevil";
 	private final String PASS = "Put0user22";
 	// En cambio estos sí, que se inicializan en el constructor de abajo:
