@@ -192,6 +192,15 @@ public class LoginView {
 			}
 		});
 		
+		txtfUser.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					login();
+					}
+			}
+		});
+		
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new RegisterView();
