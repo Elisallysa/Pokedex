@@ -38,8 +38,8 @@ public class PokeCreatorView {
 	private JLabel lblMeters;
 	private JLabel lblKilos;
 	private JLabel lblHabilidad;
-	private JPanel lblCrossHoriz;
-	private JPanel lblCrossVertic;
+	// private JPanel lblCrossHoriz;
+	// private JPanel lblCrossVertic;
 	private JButton btnGuardar;
 	private PokemonDAO pokemonDAO;
 	private TipoDAO	tipoDAO;
@@ -57,8 +57,8 @@ public class PokeCreatorView {
 		// Imprimiremos el primer Pokemon con el índice inicializado a 0 (si en la BD
 		// hay mínimo 1 Pokemon almacenado):
 		this.pokemonDAO = new PokemonDAO();
-		this.pokemons = pokemonDAO.getAll();
 		this.tipoDAO = new TipoDAO();
+		this.pokemons = pokemonDAO.getAll();
 		initialize();
 		
 		index = 0;
@@ -186,8 +186,9 @@ public class PokeCreatorView {
 		frame.getContentPane().add(tfNombre);
 		tfNombre.setColumns(10);
 
-
-		// Cruz y cursores
+		/**
+		 * NO ES NECESARIA LA DECORACIÓN:
+		 * // Cruz y cursores
 		lblCrossHoriz = new JPanel();
 		lblCrossHoriz.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblCrossHoriz.setBackground(new Color(0, 0, 0));
@@ -200,6 +201,8 @@ public class PokeCreatorView {
 		lblCrossVertic.setBackground(new Color(0, 0, 0));
 		lblCrossVertic.setBounds(558, 312, 36, 103);
 		frame.getContentPane().add(lblCrossVertic);
+		 */
+		
 
 		// Botones y otros detalles
 		btnGuardar = new JButton("GUARDAR");
@@ -248,7 +251,8 @@ public class PokeCreatorView {
 		pokemon.setHabilidad(tfHabilidad.getText());
 	}
 	private void fillTipos() {
-		cbTipo2.addItem("Ninguno");
+		ArrayList<Tipo> tipos = tipoDAO.getAll();
+		cbTipo2.addItem("");
 		for (Tipo t : tipos) {
 			cbTipo1.addItem(t.getNombreTipo());
 			cbTipo2.addItem(t.getNombreTipo());
