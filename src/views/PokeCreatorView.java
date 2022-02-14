@@ -59,6 +59,7 @@ public class PokeCreatorView {
 		this.pokemonDAO = new PokemonDAO();
 		this.tipoDAO = new TipoDAO();
 		this.pokemons = pokemonDAO.getAll();
+		this.tipos= tipoDAO.getAll(); 
 		initialize();
 		
 		index = 0;
@@ -244,11 +245,22 @@ public class PokeCreatorView {
 	}
 
 	private void setInfoPokemon(Pokemon pokemon) {
-		pokemon.setNombre(tfNombre.getText());
-		pokemon.setAltura(Double.parseDouble(tfHeight.getText()));
-		pokemon.setPeso(Double.parseDouble(tfWeight.getText()));
-		pokemon.setCategoria(tfCategoria.getText());
-		pokemon.setHabilidad(tfHabilidad.getText());
+		if (tfNombre.getText().isEmpty() || tfHeight.getText().isEmpty() || tfWeight.getText().isEmpty() || tfCategoria.getText().isEmpty() || tfHabilidad.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(btnGuardar, "Revisa los campos.");
+		} else {
+			try {
+				pokemon.setNombre(tfNombre.getText());
+				pokemon.setAltura(Double.parseDouble(tfHeight.getText()));
+				pokemon.setPeso(Double.parseDouble(tfWeight.getText()));
+				pokemon.setCategoria(tfCategoria.getText());
+				pokemon.setHabilidad(tfHabilidad.getText());
+				pokemon.setTipo1(tipos.get(cbTipo1.getSelectedIndex()));
+				pokemon.setTipo2(tipos.get(cbTipo2.getSelectedIndex()));
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(btnGuardar, "Algún campo no es correcto");
+			}
+		}
+		
 	}
 	private void fillTipos() {
 		ArrayList<Tipo> tipos = tipoDAO.getAll();
