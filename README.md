@@ -18,5 +18,6 @@ La vista principal es la PokedexView() que muestra las características principa
 #### PokeCreatorView()
 7. En esta vista se puede introducir los datos de un nuevo Pokémon y guardarlo en la base de datos.
 
-## Bugs no solucionados
+## Bugs no solucionados // Otras características no implementadas
 1. Los ComboBox() no están correctamente implementados e imposibilitan la actualización y creación de nuevos Pokémon.
+2. La aplicación incluye las imágenes transparentes en formato .png de los Pokémon almacenados en la base de datos, pero no está implementado el código para mostrarlas en la PokedexView().
