@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import javax.swing.JTextField;
@@ -34,7 +35,7 @@ public class PokedexView {
 
 	private JFrame frame;
 	private JLabel lblImgBackground;
-	private JLabel lblPokeImage;
+	private JLabel lblImagen;
 	private Image background;
 	private JTextField tfId;
 	private JTextField tfNombre;
@@ -95,6 +96,7 @@ public class PokedexView {
 		lblImgBackground.setIcon(new ImageIcon(background));
 		lblImgBackground.setSize(750, 500);
 
+		
 	}
 
 	/**
@@ -108,12 +110,17 @@ public class PokedexView {
 	}
 
 	private void configureUIComponents() {
-		// Marco e imagen de fondo
+		// Marco, imagen de fondo e imágenes de Pokemon
 		frame.getContentPane().setBackground(new Color(204, 0, 0));
 		frame.getContentPane().setLayout(null);
 		background = new ImageIcon(this.getClass().getResource("/pokedex_entry.jpg")).getImage();
 		frame.setBounds(100, 100, 713, 487);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		lblImagen = new JLabel("");
+		lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImagen.setBounds(0, 38, 297, 264);
+		frame.getContentPane().add(lblImagen);
 		
 		// Info Pokemon
 		cbTipo2 = new JComboBox();
@@ -375,6 +382,7 @@ public class PokedexView {
 	private void printPokemon() {
 		pokemon = pokemons.get(index);
 		if (!pokemons.isEmpty()) {
+			//Se imprime la información del Pokémon en cada TextField
 			tfId.setText(String.valueOf(pokemon.getId()));
 			tfNombre.setText(pokemon.getNombre());
 			tfTipo1.setText(pokemon.getTipoUno());
@@ -383,6 +391,9 @@ public class PokedexView {
 			tfHabilidad.setText(pokemon.getHabilidad());
 			tfHeight.setText(String.valueOf(pokemon.getAltura()));
 			tfWeight.setText(String.valueOf(pokemon.getPeso()));
+			//Obtenemos la imagen del Pokémon de la biblioteca de imágenes (de los 9 primeros Pokémon)
+			if (pokemon.getId()<10)
+			lblImagen.setIcon(new ImageIcon(this.getClass().getResource("/"+pokemon.getId()+".png")));
 		} else {
 			printEmpty();
 		}
@@ -479,6 +490,4 @@ public class PokedexView {
 			cbTipo2.addItem(t.getNombreTipo());
 		}
 	}
-	 
-	
 }
