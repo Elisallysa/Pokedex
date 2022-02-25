@@ -26,17 +26,17 @@ public class Pokemon {
 		this.habilidad = habilidad;
 	}
 
-	public Pokemon(int id2, String nombre2, String tipoUno, String tipoDos, double altura2, double peso2,
-			String categoria2, String habilidad2) {
+	public Pokemon(int id, String nombre, String tipoUno, String tipoDos, double altura, double peso,
+			String categoria, String habilidad) {
 		super();
-		this.id = id2;
-		this.nombre = nombre2;
-		this.setTipoUno(tipoUno);
-		this.setTipoDos(tipoDos);
-		this.altura = altura2;
-		this.peso = peso2;
-		this.categoria = categoria2;
-		this.habilidad = habilidad2;
+		this.id = id;
+		this.nombre = nombre;
+		this.tipoUno = tipoUno;
+		this.tipoDos = tipoDos;
+		this.altura = altura;
+		this.peso = peso;
+		this.categoria = categoria;
+		this.habilidad = habilidad;
 	}
 
 	// Getters and Setters
@@ -54,15 +54,6 @@ public class Pokemon {
 
 	public void setTipoDos(String tipoDos) {
 		this.tipoDos = tipoDos;
-	}
-	
-	
-	public void setTipo1(Tipo tipo1) {
-		this.tipo1 = tipo1;
-	}
-
-	public void setTipo2(Tipo tipo2) {
-		this.tipo2 = tipo2;
 	}
 
 	//Getters y setters

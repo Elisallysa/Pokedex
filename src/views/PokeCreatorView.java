@@ -41,7 +41,9 @@ public class PokeCreatorView {
 	// private JPanel lblCrossHoriz;
 	// private JPanel lblCrossVertic;
 	private JButton btnGuardar;
+	private JButton btnCancelar;
 	private PokemonDAO pokemonDAO;
+	private Pokemon pokemon;
 	private TipoDAO	tipoDAO;
 	private JLabel lblAlmohadilla;
 	private ArrayList<Pokemon> pokemons;
@@ -94,6 +96,11 @@ public class PokeCreatorView {
 		frame.setBounds(100, 100, 713, 487);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		btnCancelar = new JButton("CANCELAR");
+		btnCancelar.setFont(new Font("Courier New", Font.BOLD, 18));
+		btnCancelar.setBounds(403, 347, 209, 35);
+		frame.getContentPane().add(btnCancelar);
+		
 		cbTipo2 = new JComboBox<String>();
 		cbTipo2.setBounds(525, 143, 113, 35);
 		frame.getContentPane().add(cbTipo2);
@@ -126,7 +133,6 @@ public class PokeCreatorView {
 		tfHabilidad = new JTextField();
 		tfHabilidad.setText("Habilidad");
 		tfHabilidad.setHorizontalAlignment(SwingConstants.CENTER);
-		tfHabilidad.setEditable(false);
 		tfHabilidad.setBorder(null);
 		tfHabilidad.setOpaque(false);
 		tfHabilidad.setBounds(300, 154, 84, 62);
@@ -147,7 +153,6 @@ public class PokeCreatorView {
 		tfWeight.setText("0.0");
 		tfWeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfWeight.setOpaque(false);
-		tfWeight.setEditable(false);
 		tfWeight.setFont(new Font("Consolas", Font.PLAIN, 24));
 		tfWeight.setColumns(10);
 		tfWeight.setBorder(null);
@@ -158,7 +163,6 @@ public class PokeCreatorView {
 		tfHeight.setText("0.0");
 		tfHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfHeight.setOpaque(false);
-		tfHeight.setEditable(false);
 		tfHeight.setFont(new Font("Consolas", Font.PLAIN, 24));
 		tfHeight.setBorder(null);
 		tfHeight.setBounds(482, 199, 67, 35);
@@ -169,7 +173,6 @@ public class PokeCreatorView {
 		tfCategoria.setText("categor\u00EDa");
 		tfCategoria.setBorder(null);
 		tfCategoria.setOpaque(false);
-		tfCategoria.setEditable(false);
 		tfCategoria.setFont(new Font("Consolas", Font.PLAIN, 24));
 		tfCategoria.setBounds(346, 95, 246, 29);
 		frame.getContentPane().add(tfCategoria);
@@ -181,38 +184,18 @@ public class PokeCreatorView {
 		tfNombre.setBorder(null);
 		tfNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		tfNombre.setFont(new Font("Consolas", Font.BOLD, 24));
-		tfNombre.setEditable(false);
 		tfNombre.setOpaque(false);
 		tfNombre.setBounds(346, 55, 220, 35);
 		frame.getContentPane().add(tfNombre);
 		tfNombre.setColumns(10);
 
-		/**
-		 * NO ES NECESARIA LA DECORACIÓN:
-		 * // Cruz y cursores
-		lblCrossHoriz = new JPanel();
-		lblCrossHoriz.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblCrossHoriz.setBackground(new Color(0, 0, 0));
-		lblCrossHoriz.setBounds(524, 345, 103, 36);
-		frame.getContentPane().add(lblCrossHoriz);
-		lblCrossHoriz.setLayout(null);
-
-		lblCrossVertic = new JPanel();
-		lblCrossVertic.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblCrossVertic.setBackground(new Color(0, 0, 0));
-		lblCrossVertic.setBounds(558, 312, 36, 103);
-		frame.getContentPane().add(lblCrossVertic);
-		 */
-		
-
 		// Botones y otros detalles
 		btnGuardar = new JButton("GUARDAR");
-		
-		btnGuardar.setVisible(false);
+		btnGuardar.setVisible(true);
 		btnGuardar.setMargin(new Insets(1, 1, 1, 1));
 		btnGuardar.setFont(new Font("Courier New", Font.BOLD, 18));
 		btnGuardar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnGuardar.setBounds(71, 345, 209, 36);
+		btnGuardar.setBounds(93, 345, 209, 36);
 		frame.getContentPane().add(btnGuardar);
 
 		lblAlmohadilla = new JLabel("#");
@@ -229,6 +212,14 @@ public class PokeCreatorView {
 			public void actionPerformed(ActionEvent e) {
 			createPokemon();
 			JOptionPane.showMessageDialog(btnGuardar, "Nuevo Pokémon creado.");
+			frame.dispose();
+			new PokedexView();
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			frame.dispose();
 			new PokedexView();
 			}
 		});
@@ -236,9 +227,10 @@ public class PokeCreatorView {
 	}
 
 	private void createPokemon() {
+		//El id es el del último Pokemon guardado + 1
 		int lastIndexArray = pokemons.size()-1;
-		int lastPokemonIndex = (pokemons.get(lastIndexArray).getId()+1);
-		Pokemon pokemon = new Pokemon(lastPokemonIndex, null, null, null, index, index, null, null);
+		int newPokemonId = (pokemons.get(lastIndexArray).getId()+1);
+		pokemon = new Pokemon(newPokemonId, null, null, null, index, index, null, null);
 		setInfoPokemon(pokemon);
 		pokemons.add(pokemon);
 		pokemonDAO.insert(pokemons.get(pokemons.lastIndexOf(pokemon)));
@@ -254,8 +246,11 @@ public class PokeCreatorView {
 				pokemon.setPeso(Double.parseDouble(tfWeight.getText()));
 				pokemon.setCategoria(tfCategoria.getText());
 				pokemon.setHabilidad(tfHabilidad.getText());
-				pokemon.setTipo1(tipos.get(cbTipo1.getSelectedIndex()));
-				pokemon.setTipo2(tipos.get(cbTipo2.getSelectedIndex()));
+				//Obtenemos el tipo de Pokemon del ComboBox1 y del 2(si se ha seleccionado alguna opción que no sea 0)
+				pokemon.setTipoUno(tipos.get(cbTipo1.getSelectedIndex()).getNombreTipo());
+				if (cbTipo2.getSelectedIndex()!=0) {
+					pokemon.setTipoDos(tipos.get(cbTipo2.getSelectedIndex()+1).getNombreTipo());
+				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(btnGuardar, "Algún campo no es correcto");
 			}
