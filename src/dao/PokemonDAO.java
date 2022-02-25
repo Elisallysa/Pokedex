@@ -8,6 +8,14 @@ import models.Pokemon;
 
 public class PokemonDAO extends AbstractDAO {
 
+	/**
+	 * Método que selecciona el primer Pokémon que aparece en la BD. Obtendremos
+	 * todos los campos del registro y los almacenaremos en una nueva instancia de
+	 * la clase Pokemon.
+	 * 
+	 * @return - el objeto Pokemon que corresponde al primer Pokémon de la lista
+	 *         pokemon en la BD
+	 */
 	public Pokemon first() {
 		final String QUERY = "SELECT * FROM pokemon LIMIT 1";
 		try {
@@ -31,6 +39,12 @@ public class PokemonDAO extends AbstractDAO {
 
 	}
 
+	/**
+	 * Método que almacena en un array todos los objetos Pokemon almacenados en la
+	 * BD.
+	 * 
+	 * @return - ArrayList de los Pokémon que contiene la BD.
+	 */
 	public ArrayList<Pokemon> getAll() {
 		final String QUERY = "SELECT * FROM pokemon";
 		var pokemons = new ArrayList<Pokemon>();
@@ -54,9 +68,16 @@ public class PokemonDAO extends AbstractDAO {
 		return pokemons;
 	}
 
+	/**
+	 * Método que inserta un nuevo registro Pokémon con todos sus campos
+	 * correspondientes en la BD.
+	 * 
+	 * @param pokemon - nuevo objeto Pokémon con todos sus campos.
+	 */
 	public void insert(Pokemon pokemon) {
-		final String INSERT = "INSERT INTO pokemon VALUES ("+pokemon.getId()+", '"+pokemon.getNombre()+"', '"+pokemon.getTipoUno()+"', '"+pokemon.getTipoDos()+
-								"', "+pokemon.getAltura()+", "+pokemon.getPeso()+", '"+pokemon.getCategoria()+"', '"+pokemon.getHabilidad()+"')";
+		final String INSERT = "INSERT INTO pokemon VALUES (" + pokemon.getId() + ", '" + pokemon.getNombre() + "', '"
+				+ pokemon.getTipoUno() + "', '" + pokemon.getTipoDos() + "', " + pokemon.getAltura() + ", "
+				+ pokemon.getPeso() + ", '" + pokemon.getCategoria() + "', '" + pokemon.getHabilidad() + "')";
 		try {
 			stmt.executeUpdate(INSERT);
 		} catch (SQLException e) {
@@ -64,6 +85,11 @@ public class PokemonDAO extends AbstractDAO {
 		}
 	}
 
+	/**
+	 * Elimina un Pokémon que se encuentre en la BD
+	 * 
+	 * @param pokemon - Objeto Pokémon que se desea eliminar.
+	 */
 	public void delete(Pokemon pokemon) {
 		final String DELETE = "DELETE FROM pokemon WHERE id = " + pokemon.getId();
 		try {
@@ -72,11 +98,17 @@ public class PokemonDAO extends AbstractDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Método que actualiza los datos de un Pokémon existente en la BD.
+	 * 
+	 * @param pokemon - Objeto Pokémon que se desea actualizar.
+	 */
 	public void update(Pokemon pokemon) {
-		final String UPDATE = "UPDATE pokemon SET nombre = '"+pokemon.getNombre()+"', tipo1 = '"+pokemon.getTipoUno()+"', tipo2 = '"+pokemon.getTipoDos()+
-				"', altura = "+pokemon.getAltura()+", peso = "+pokemon.getPeso()+", categoria = '"+pokemon.getCategoria()+"', habilidad = '"+pokemon.getHabilidad()+"'"+
-				"WHERE id = "+pokemon.getId();
+		final String UPDATE = "UPDATE pokemon SET nombre = '" + pokemon.getNombre() + "', tipo1 = '"
+				+ pokemon.getTipoUno() + "', tipo2 = '" + pokemon.getTipoDos() + "', altura = " + pokemon.getAltura()
+				+ ", peso = " + pokemon.getPeso() + ", categoria = '" + pokemon.getCategoria() + "', habilidad = '"
+				+ pokemon.getHabilidad() + "'" + "WHERE id = " + pokemon.getId();
 		try {
 			stmt.executeUpdate(UPDATE);
 		} catch (SQLException e) {

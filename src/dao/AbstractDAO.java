@@ -13,7 +13,9 @@ public abstract class AbstractDAO {
 	// En cambio estos sí, que se inicializan en el constructor de abajo:
 	protected Connection conn;
 	protected Statement stmt;
-	
+
+	// Constructor de la clase abstracta que heredarán las clases hijas que harán
+	// conexiones con la BD
 	public AbstractDAO() {
 		try {
 			this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -21,6 +23,6 @@ public abstract class AbstractDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }
