@@ -25,13 +25,16 @@ import java.awt.event.MouseEvent;
 
 public class RegisterView {
 
+	// Marco, etiquetas y campos de texto para el input
 	private JFrame frame;
 	private JTextField txtfUsername;
 	private JPasswordField pwfPassword;
+	private JPasswordField pwfConfirmPassword;
 	private JLabel lblTitle;
-	private JLabel lblPassword;
 	private JLabel lblUsername;
-	private JButton btnRegisterUser;
+	private JLabel lblPassword;
+	private JLabel lblConfirmPassword;
+	// Decoraciones
 	private JLabel lblNintendo;
 	private JLabel lblGameBoy;
 	private JLabel lblNewLabel_3;
@@ -40,12 +43,15 @@ public class RegisterView {
 	private JLabel lblNewLabel;
 	private JLabel lblBattery;
 	private JLabel lblTM;
+	// Botón de registro
+	private JButton btnRegisterUser;
+	// Importación de clases necesarias
 	private UserDAO userDAO;
-	private JPasswordField pwfConfirmPassword;
-	private JLabel lblConfirmPassword;
+	private User user;
+	
 
 	/**
-	 * Create the application.
+	 * Creación de la aplicación. Se reserva memoria al UserDAO
 	 */
 	public RegisterView() {
 		initialize();
@@ -53,7 +59,7 @@ public class RegisterView {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Se inicializan los contenidos de la interfaz gráfica de la vista.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -63,6 +69,9 @@ public class RegisterView {
 
 	}
 
+	/*
+	 * Se configuran los componentes de la interfaz gráfica de la vista
+	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setForeground(SystemColor.controlShadow);
 		frame.setAlwaysOnTop(true);
@@ -176,17 +185,23 @@ public class RegisterView {
 		frame.getContentPane().add(lblTM);
 	}
 
+	/*
+	 * Se configuran los Listeners de los botones de la vista
+	 */
 	public void configureUIListeners() {
+		/*
+		 * El botón "Registrarme" obtiene el texto de los campos nombre de usuario y contraseña y lo añade a la BD.
+		 */
 		btnRegisterUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String username = txtfUsername.getText();
 				String password = new String(pwfPassword.getPassword());
 				String confirmedPassword = new String(pwfConfirmPassword.getPassword());
 
-				if (!username.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) {
-					if (password.equals(confirmedPassword)) {
-						User u = new User(0, username, password);
-						userDAO.register(u);
+				if (!username.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) { // Todos los campos deben tener texto
+					if (password.equals(confirmedPassword)) { // Si la contraseña es igual a la contraseña confirmada se registra el usuario
+						user = new User(0, username, password);
+						userDAO.register(user);
 						JOptionPane.showMessageDialog(btnRegisterUser, "¡Gracias por unirte!");
 						new LoginView();
 						frame.dispose();
