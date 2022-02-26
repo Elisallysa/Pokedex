@@ -9,6 +9,7 @@ import models.Pokemon;
 public class PokemonDAO extends AbstractDAO {
 
 	/**
+	 * MÉTODO QUE NO SE UTILIZA EN LA APLICACIÓN. Se mantiene por interés académico.
 	 * Método que selecciona el primer Pokémon que aparece en la BD. Obtendremos
 	 * todos los campos del registro y los almacenaremos en una nueva instancia de
 	 * la clase Pokemon.
