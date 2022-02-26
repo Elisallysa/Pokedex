@@ -1,7 +1,6 @@
 package views;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 
@@ -20,8 +19,6 @@ import models.User;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class RegisterView {
 
@@ -48,7 +45,6 @@ public class RegisterView {
 	// Importación de clases necesarias
 	private UserDAO userDAO;
 	private User user;
-	
 
 	/**
 	 * Creación de la aplicación. Se reserva memoria al UserDAO
@@ -190,7 +186,8 @@ public class RegisterView {
 	 */
 	public void configureUIListeners() {
 		/*
-		 * El botón "Registrarme" obtiene el texto de los campos nombre de usuario y contraseña y lo añade a la BD.
+		 * El botón "Registrarme" obtiene el texto de los campos nombre de usuario y
+		 * contraseña y lo añade a la BD.
 		 */
 		btnRegisterUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -198,8 +195,10 @@ public class RegisterView {
 				String password = new String(pwfPassword.getPassword());
 				String confirmedPassword = new String(pwfConfirmPassword.getPassword());
 
-				if (!username.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) { // Todos los campos deben tener texto
-					if (password.equals(confirmedPassword)) { // Si la contraseña es igual a la contraseña confirmada se registra el usuario
+				if (!username.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) { // Todos los campos
+																									// deben tener texto
+					if (password.equals(confirmedPassword)) { // Si la contraseña es igual a la contraseña confirmada se
+																// registra el usuario
 						user = new User(0, username, password);
 						userDAO.register(user);
 						JOptionPane.showMessageDialog(btnRegisterUser, "¡Gracias por unirte!");

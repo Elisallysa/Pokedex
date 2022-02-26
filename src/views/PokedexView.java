@@ -1,19 +1,12 @@
 package views;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.Color;
-import java.awt.Panel;
 import java.awt.Image;
-import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import java.awt.SystemColor;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -109,6 +102,7 @@ public class PokedexView {
 	/*
 	 * Método que configura los componentes de la interfaz gráfica de la vista.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void configureUIComponents() {
 		// Marco, imagen de fondo e imágenes de Pokemon
 		frame.getContentPane().setBackground(new Color(204, 0, 0));
@@ -362,8 +356,12 @@ public class PokedexView {
 					pokemonDAO.delete(pokemons.get(index));
 					pokemons.remove(pokemons.get(index));
 
-					if (pokemons.size() > 0) {
-						printBack(); // Si quedan Pokémon en la BD, imprime el anterior
+					if (pokemons.size() > 0 && index != 0) {
+						// printBack(); // En lugar de usar un método para imprimir el anterior, restamos 1 al índice e imprimimos el Pokémon.	
+						index = index-1;
+						printPokemon();
+					} else if (pokemons.size() > 0 && index == 0) {
+						index = pokemons.size()-1;
 					} else {
 						JOptionPane.showMessageDialog(btnEliminar, "No hay Pokémon en la Pokedex.");
 						printEmpty(); // Si no quedan Pokémon en la BD imprime un mensaje que lo comunica y se dejan
@@ -383,25 +381,30 @@ public class PokedexView {
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interruptorEditar();
+				cbTipo1.setSelectedItem(pokemons.get(index).getTipoUno()); // Por defecto aparecen las opciones ya seleccionadas
+				if (pokemons.get(index).getTipoDos() != null) {
+					cbTipo2.setSelectedItem(pokemons.get(index).getTipoDos());
+				}
 				btnGuardar.setVisible(true); // El botón Guardar se hace visible para guardar los cambios.
-
-				/*
-				 * El botón Guardar guarda los datos cambiados en la base de datos.
-				 */
-				btnGuardar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						try {
-							updatePokemon();
-							pokemonDAO.update(pokemons.get(index));
-							interruptorEditar();
-						} catch (Exception errorUpdate) {
-							System.out.println("¿Has introducido los datos correctos?");
-						}
-					}
-				});
 			}
 		});
 
+		/*
+		 * El botón Guardar guarda los datos cambiados en la base de datos.
+		 */
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					updatePokemon();
+					pokemonDAO.update(pokemons.get(index));
+					interruptorEditar();
+					printPokemon();
+				} catch (Exception errorUpdate) {
+					System.out.println("¿Has introducido los datos correctos?");
+				}
+			}
+		});
+		
 		/*
 		 * El botón Crear elimina la vista de la Pokédex y abre una nueva vista de
 		 * PokeCreatorView().
@@ -434,7 +437,7 @@ public class PokedexView {
 			tfWeight.setText(String.valueOf(pokemon.getPeso()));
 			// Se obtiene la imagen del Pokémon de la biblioteca de imágenes (de los 9
 			// primeros Pokémon)
-			if (pokemon.getId() < 10 && pokemon.getId() <= pokemons.size())
+			if (pokemon.getId() < 10)
 				lblImagen.setIcon(new ImageIcon(this.getClass().getResource("/" + pokemon.getId() + ".png")));
 			else
 				lblImagen.setIcon(null);
@@ -447,8 +450,9 @@ public class PokedexView {
 	/*
 	 * Método que imprime el Pokémon que se encuentra en la posición anterior al del
 	 * índice actual.
-	 */
-	private void printBack() {
+	 * Conservamos el método por interés académico.
+	 * 
+	  	private void printBack() {
 		pokemon = pokemons.get(index - 1);
 		// Obtenemos la info del Pokémon para imprimirla en los campos de texto
 		tfId.setText(String.valueOf(pokemon.getId()));
@@ -459,7 +463,9 @@ public class PokedexView {
 		tfHabilidad.setText(pokemon.getHabilidad());
 		tfHeight.setText(String.valueOf(pokemon.getAltura()));
 		tfWeight.setText(String.valueOf(pokemon.getPeso()));
-	}
+	} 
+	 */
+	
 
 	/*
 	 * Imprime los campos de texto vacíos.
@@ -525,8 +531,10 @@ public class PokedexView {
 		String tipoUno = tipos.get(cbTipo1.getSelectedIndex()).getNombreTipo();
 		pokemon.setTipoUno(tipoUno);
 		if (cbTipo2.getSelectedIndex() != 0) {
-			String tipoDos = tipos.get(cbTipo2.getSelectedIndex() + 1).getNombreTipo();
+			String tipoDos = tipos.get(cbTipo2.getSelectedIndex()-1).getNombreTipo();
 			pokemon.setTipoDos(tipoDos);
+		} else if (cbTipo2.getSelectedIndex() == 0) {
+			pokemon.setTipoDos(null);
 		}
 
 	}

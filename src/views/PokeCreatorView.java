@@ -3,7 +3,6 @@ package views;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Image;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -276,6 +275,8 @@ public class PokeCreatorView {
 				pokemon.setTipoUno(tipos.get(cbTipo1.getSelectedIndex()).getNombreTipo());
 				if (cbTipo2.getSelectedIndex() != 0) {
 					pokemon.setTipoDos(tipos.get(cbTipo2.getSelectedIndex() - 1).getNombreTipo());
+				} else {
+					pokemon.setTipoDos(null);
 				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(btnGuardar, "Algún campo no es correcto");

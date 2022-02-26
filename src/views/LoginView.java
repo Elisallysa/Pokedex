@@ -1,7 +1,5 @@
 package views;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -12,19 +10,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
-import com.mysql.cj.x.protobuf.MysqlxExpect.Open.Condition.Key;
 
 import dao.UserDAO;
 import models.User;
 
-import java.awt.Panel;
 import javax.swing.JPanel;
 import java.awt.SystemColor;
-import java.awt.Label;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
